@@ -14,7 +14,17 @@ import LoginPage from "./pages/LoginPage";
 import BookingPage from "./pages/BookingPage";
 import WalletPage from "./pages/WalletPage";
 import UserBookingsPage from "./pages/UserBookingsPage";
+import BecomeMentorPage from "./pages/BecomeMentorPage";
 import NotFound from "./pages/NotFound";
+
+// Dashboard Pages
+import DashboardLayout from "./components/dashboard/DashboardLayout";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import DashboardMeetings from "./pages/dashboard/DashboardMeetings";
+import DashboardServices from "./pages/dashboard/DashboardServices";
+import DashboardCalendar from "./pages/dashboard/DashboardCalendar";
+import DashboardPayouts from "./pages/dashboard/DashboardPayouts";
+import DashboardWallet from "./pages/dashboard/DashboardWallet";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +45,18 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bookings" element={<UserBookingsPage />} />
+            <Route path="/become-mentor" element={<BecomeMentorPage />} />
+            
+            {/* Mentor Dashboard Routes */}
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route index element={<DashboardHome />} />
+              <Route path="meetings" element={<DashboardMeetings />} />
+              <Route path="services" element={<DashboardServices />} />
+              <Route path="calendar" element={<DashboardCalendar />} />
+              <Route path="payouts" element={<DashboardPayouts />} />
+              <Route path="wallet" element={<DashboardWallet />} />
+            </Route>
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

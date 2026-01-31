@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Star,
   MapPin,
@@ -19,8 +26,13 @@ import {
   Heart,
   Video,
   Check,
+  Edit2,
+  MoreVertical,
+  LayoutDashboard,
+  Users,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import type {
   MentorWithProfile,
   Service,
@@ -33,6 +45,8 @@ import { toast } from 'sonner';
 
 export default function MentorProfilePage() {
   const { mentorId } = useParams<{ mentorId: string }>();
+  const navigate = useNavigate();
+  const { user, isMentor } = useAuth();
   const [mentor, setMentor] = useState<MentorWithProfile | null>(null);
   const [services, setServices] = useState<Service[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -40,6 +54,7 @@ export default function MentorProfilePage() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
 
   useEffect(() => {
     if (mentorId) {
@@ -66,10 +81,17 @@ export default function MentorProfilePage() {
         .eq('user_id', mentorData.user_id)
         .single();
 
-      setMentor({
+      const mentorWithProfile = {
         ...mentorData,
         profile: profileData,
-      } as MentorWithProfile);
+      } as MentorWithProfile;
+      
+      setMentor(mentorWithProfile);
+      
+      // Check if this is the user's own profile
+      if (user && mentorData.user_id === user.id) {
+        setIsOwnProfile(true);
+      }
 
       // Fetch related data in parallel
       const [servicesRes, experiencesRes, educationRes, achievementsRes, reviewsRes] =
@@ -163,10 +185,37 @@ export default function MentorProfilePage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Header */}
-            <Card>
+            <Card className="relative overflow-hidden">
+              {isOwnProfile && (
+                <div className="absolute top-4 right-4">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="bg-primary/10 hover:bg-primary/20">
+                        <Edit2 className="h-4 w-4 text-primary" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => navigate('/dashboard/profile/edit')}>
+                        <Edit2 className="mr-2 h-4 w-4" />
+                        Edit Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        View Dashboard
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleShare}>
+                        <Share2 className="mr-2 h-4 w-4" />
+                        Share Profile
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              )}
+              
               <CardContent className="p-6">
                 <div className="flex flex-col gap-6 sm:flex-row">
-                  <Avatar className="h-28 w-28 ring-4 ring-secondary">
+                  <Avatar className="h-28 w-28 ring-4 ring-primary/20">
                     <AvatarImage
                       src={mentor.profile?.avatar_url || ''}
                       alt={mentor.profile?.full_name}
@@ -182,48 +231,34 @@ export default function MentorProfilePage() {
                         <h1 className="text-2xl font-bold">
                           {mentor.profile?.full_name}
                         </h1>
-                        <p className="text-lg text-muted-foreground">
+                        <p className="text-muted-foreground">
                           {mentor.headline}
                         </p>
-                        {currentRole && (
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            {currentRole.role} at {currentRole.company}
+                        {mentor.location && (
+                          <p className="mt-1 flex items-center gap-1 text-sm text-primary">
+                            <MapPin className="h-3 w-3" />
+                            {mentor.location}
                           </p>
                         )}
                       </div>
 
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="icon" onClick={handleShare}>
-                          <Share2 className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="icon">
-                          <Heart className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                      {mentor.location && (
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          {mentor.location}
-                        </span>
+                      {!isOwnProfile && (
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="icon" onClick={handleShare}>
+                            <Share2 className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="icon">
+                            <Heart className="h-4 w-4" />
+                          </Button>
+                        </div>
                       )}
-                      <span className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                        {mentor.average_rating.toFixed(1)} ({reviews.length} reviews)
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {mentor.total_sessions} sessions completed
-                      </span>
                     </div>
 
                     {/* Skills */}
                     {mentor.skills && mentor.skills.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
                         {mentor.skills.map((skill) => (
-                          <Badge key={skill} variant="secondary">
+                          <Badge key={skill} className="bg-primary/10 text-primary hover:bg-primary/20 border-0">
                             {skill}
                           </Badge>
                         ))}
@@ -235,7 +270,17 @@ export default function MentorProfilePage() {
             </Card>
 
             {/* Introduction */}
-            <Card>
+            <Card className="relative">
+              {isOwnProfile && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-4 right-4 text-primary"
+                  onClick={() => navigate('/dashboard/profile/edit')}
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+              )}
               <CardHeader>
                 <CardTitle>Introduction</CardTitle>
               </CardHeader>
@@ -249,39 +294,42 @@ export default function MentorProfilePage() {
 
             {/* Experience */}
             {experiences.length > 0 && (
-              <Card>
+              <Card className="relative">
+                {isOwnProfile && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 text-primary"
+                    onClick={() => navigate('/dashboard/profile/edit')}
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Briefcase className="h-5 w-5" />
+                    <Briefcase className="h-5 w-5 text-primary" />
                     Professional Experience
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {experiences.map((exp, index) => (
-                    <div key={exp.id}>
+                    <div key={exp.id} className="relative pl-4 border-l-2 border-primary/30">
+                      <div className="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-primary" />
                       <div className="flex justify-between">
                         <div>
                           <h4 className="font-semibold">{exp.role}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {exp.company}
+                            {exp.company} | {exp.is_current ? 'Full Time' : 'Previous'}
                           </p>
                         </div>
                         <div className="text-right text-sm text-muted-foreground">
-                          {new Date(exp.start_date).getFullYear()} -{' '}
-                          {exp.is_current
-                            ? 'Present'
-                            : exp.end_date
-                            ? new Date(exp.end_date).getFullYear()
-                            : 'Present'}
+                          <p>{new Date(exp.start_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - {exp.is_current ? 'Present' : exp.end_date ? new Date(exp.end_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present'}</p>
                         </div>
                       </div>
                       {exp.description && (
                         <p className="mt-2 text-sm text-muted-foreground">
                           {exp.description}
                         </p>
-                      )}
-                      {index < experiences.length - 1 && (
-                        <Separator className="mt-4" />
                       )}
                     </div>
                   ))}
@@ -291,11 +339,21 @@ export default function MentorProfilePage() {
 
             {/* Education */}
             {education.length > 0 && (
-              <Card>
+              <Card className="relative">
+                {isOwnProfile && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 text-primary"
+                    onClick={() => navigate('/dashboard/profile/edit')}
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5" />
-                    Education
+                    <GraduationCap className="h-5 w-5 text-primary" />
+                    Education & Qualification
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -303,10 +361,10 @@ export default function MentorProfilePage() {
                     <div key={edu.id}>
                       <div className="flex justify-between">
                         <div>
-                          <h4 className="font-semibold">{edu.degree}</h4>
+                          <h4 className="font-semibold">{edu.institution}</h4>
                           <p className="text-sm text-muted-foreground">
-                            {edu.institution}
-                            {edu.field_of_study && ` • ${edu.field_of_study}`}
+                            {edu.degree}
+                            {edu.field_of_study && ` - ${edu.field_of_study}`}
                           </p>
                         </div>
                         <div className="text-right text-sm text-muted-foreground">
@@ -324,27 +382,37 @@ export default function MentorProfilePage() {
 
             {/* Achievements */}
             {achievements.length > 0 && (
-              <Card>
+              <Card className="relative">
+                {isOwnProfile && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 text-primary"
+                    onClick={() => navigate('/dashboard/profile/edit')}
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Award className="h-5 w-5" />
-                    Achievements
+                    <Award className="h-5 w-5 text-primary" />
+                    Achievement & Highlights
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  {achievements.map((achievement) => (
-                    <div key={achievement.id} className="flex items-start gap-2">
-                      <Check className="mt-0.5 h-4 w-4 text-primary" />
-                      <div>
-                        <p className="font-medium">{achievement.title}</p>
-                        {achievement.description && (
-                          <p className="text-sm text-muted-foreground">
-                            {achievement.description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                <CardContent>
+                  <ul className="space-y-2">
+                    {achievements.map((achievement) => (
+                      <li key={achievement.id} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-foreground shrink-0" />
+                        <div>
+                          <span className="font-medium">{achievement.title}</span>
+                          {achievement.description && (
+                            <span className="text-muted-foreground"> | {achievement.description}</span>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
             )}
@@ -399,51 +467,40 @@ export default function MentorProfilePage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick Book Card */}
-            <Card className="sticky top-20">
+            <Card className="sticky top-20 bg-gradient-to-b from-primary/5 to-background border-primary/20">
               <CardContent className="p-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">
-                    ₹{mentor.hourly_rate}
-                  </div>
-                  <p className="text-sm text-muted-foreground">per session</p>
+                <h3 className="font-semibold text-lg mb-2">1-On-1 Mentorship Call</h3>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-bold text-primary">₹{mentor.hourly_rate}</span>
+                  <span className="text-muted-foreground">/Call</span>
                 </div>
 
-                <Separator className="my-4" />
-
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Sessions</span>
-                    <span className="font-medium">{mentor.total_sessions}+</span>
+                <div className="mt-4 space-y-3 text-sm">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-primary" />
+                    <span><strong>{mentor.total_sessions}</strong> sessions</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Rating</span>
-                    <span className="flex items-center gap-1 font-medium">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                      {mentor.average_rating.toFixed(1)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Response</span>
-                    <span className="font-medium">Within 24hrs</span>
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    <span><strong>{mentor.average_rating.toFixed(1)}</strong> ({reviews.length} review{reviews.length !== 1 ? 's' : ''})</span>
                   </div>
                 </div>
 
                 <Button asChild className="mt-6 w-full" size="lg">
                   <Link to={`/mentor/${mentorId}/book`}>
                     <Video className="mr-2 h-4 w-4" />
-                    Book 1-on-1 Call
+                    Book Call
                   </Link>
                 </Button>
+                
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  Usually responded within 24 hours
+                </p>
 
                 {services.length > 0 && (
-                  <Button
-                    variant="outline"
-                    asChild
-                    className="mt-3 w-full"
-                    size="lg"
-                  >
+                  <Button variant="link" asChild className="mt-2 w-full text-primary">
                     <Link to={`/mentor/${mentorId}/services`}>
-                      View All Services ({services.length})
+                      View all Services
                     </Link>
                   </Button>
                 )}
