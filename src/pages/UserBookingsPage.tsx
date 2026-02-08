@@ -19,6 +19,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { format } from 'date-fns';
 import type { BookingWithDetails } from '@/types/database';
+import { UserFeedbackDialog } from '@/components/feedback/UserFeedbackDialog';
 
 export default function UserBookingsPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -26,6 +27,7 @@ export default function UserBookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('upcoming');
+  const [feedbackBooking, setFeedbackBooking] = useState<any>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -217,13 +219,14 @@ export default function UserBookingsPage() {
                         </div>
                       )}
 
-                      {booking.status === 'completed' && !booking.review && (
+                      {booking.status === 'completed' && (
                         <div className="mt-4 border-t pt-4">
-                          <Button variant="outline" asChild>
-                            <Link to={`/review/${booking.id}`}>
-                              <Star className="mr-2 h-4 w-4" />
-                              Leave a Review
-                            </Link>
+                          <Button
+                            variant="outline"
+                            onClick={() => setFeedbackBooking(booking)}
+                          >
+                            <Star className="mr-2 h-4 w-4" />
+                            Write a Review
                           </Button>
                         </div>
                       )}
@@ -251,6 +254,18 @@ export default function UserBookingsPage() {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* User Feedback Dialog */}
+        {feedbackBooking && (
+          <UserFeedbackDialog
+            open={!!feedbackBooking}
+            onOpenChange={(open) => !open && setFeedbackBooking(null)}
+            bookingId={feedbackBooking.id}
+            mentorId={feedbackBooking.mentor_id}
+            mentorName={feedbackBooking.mentor?.profile?.full_name || 'Mentor'}
+            onSubmitted={fetchBookings}
+          />
+        )}
       </div>
     </PublicLayout>
   );
