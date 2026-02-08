@@ -104,6 +104,7 @@ export interface Booking {
   scheduled_at: string;
   duration: number;
   status: BookingStatus;
+  payout_status: string;
   meeting_link?: string;
   notes?: string;
   price: number;
@@ -118,6 +119,17 @@ export interface Review {
   mentor_id: string;
   rating: number;
   comment?: string;
+  private_feedback?: string;
+  created_at: string;
+}
+
+export interface MentorReview {
+  id: string;
+  booking_id: string;
+  mentor_id: string;
+  user_id: string;
+  rating: number;
+  comment: string;
   created_at: string;
 }
 

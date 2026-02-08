@@ -19,6 +19,7 @@ import {
   TrendingUp,
   Check,
   X,
+  AlertCircle,
 } from 'lucide-react';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { toast } from 'sonner';
@@ -86,7 +87,7 @@ export default function DashboardHome() {
       const startOfWeek = new Date(today);
       startOfWeek.setDate(today.getDate() - today.getDay());
 
-      const [bookingsRes, walletRes, availabilityRes] = await Promise.all([
+      const [bookingsRes, walletRes, availabilityRes, completedBookingsRes] = await Promise.all([
         supabase
           .from('bookings')
           .select(`
@@ -112,6 +113,12 @@ export default function DashboardHome() {
           .select('*')
           .eq('mentor_id', mentorProfile.id)
           .eq('day_of_week', today.getDay()),
+        supabase
+          .from('bookings')
+          .select('id')
+          .eq('mentor_id', mentorProfile.id)
+          .eq('status', 'completed')
+          .eq('payout_status', 'pending_review'),
       ]);
 
       // Calculate stats
@@ -119,10 +126,12 @@ export default function DashboardHome() {
         isToday(new Date(b.scheduled_at)) && b.status !== 'cancelled'
       );
       
+      setPendingReviewCount(completedBookingsRes.data?.length || 0);
+
       setStats({
         todaysSessions: todayBookings.length,
-        activeMentees: 24, // Would need separate query for unique users
-        hoursThisWeek: 12.5, // Would need aggregation
+        activeMentees: 24,
+        hoursThisWeek: 12.5,
         earningsMTD: walletRes.data?.balance || 0,
       });
 
@@ -156,6 +165,8 @@ export default function DashboardHome() {
     return format(d, 'MMM d');
   };
 
+  const [pendingReviewCount, setPendingReviewCount] = useState(0);
+
   const recentActivity = [
     { icon: Check, title: 'Session Completed', description: '45 min session with Alex Kim', time: '2h ago', color: 'text-green-600 bg-green-100' },
     { icon: Star, title: 'New Review', description: '5-star rating from Sarah Chen', time: '3h ago', color: 'text-amber-600 bg-amber-100' },
@@ -170,6 +181,21 @@ export default function DashboardHome() {
         <h1 className="text-2xl font-bold">Welcome back, {profile?.full_name?.split(' ')[0]}</h1>
         <p className="text-muted-foreground">Here's what's happening with your mentorship today.</p>
       </div>
+
+      {/* Pending Review Alert */}
+      {pendingReviewCount > 0 && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
+          <div>
+            <p className="font-semibold text-amber-900">
+              {pendingReviewCount} session{pendingReviewCount > 1 ? 's' : ''} awaiting your review
+            </p>
+            <p className="text-sm text-amber-700 mt-1">
+              Payment is held until you submit feedback for completed sessions.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

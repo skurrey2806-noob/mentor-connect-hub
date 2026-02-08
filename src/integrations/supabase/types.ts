@@ -95,6 +95,7 @@ export type Database = {
           meeting_link: string | null
           mentor_id: string
           notes: string | null
+          payout_status: string
           price: number
           scheduled_at: string
           service_id: string | null
@@ -109,6 +110,7 @@ export type Database = {
           meeting_link?: string | null
           mentor_id: string
           notes?: string | null
+          payout_status?: string
           price?: number
           scheduled_at: string
           service_id?: string | null
@@ -123,6 +125,7 @@ export type Database = {
           meeting_link?: string | null
           mentor_id?: string
           notes?: string | null
+          payout_status?: string
           price?: number
           scheduled_at?: string
           service_id?: string | null
@@ -340,6 +343,51 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_reviews: {
+        Row: {
+          booking_id: string
+          comment: string
+          created_at: string
+          id: string
+          mentor_id: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          booking_id: string
+          comment: string
+          created_at?: string
+          id?: string
+          mentor_id: string
+          rating: number
+          user_id: string
+        }
+        Update: {
+          booking_id?: string
+          comment?: string
+          created_at?: string
+          id?: string
+          mentor_id?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentor_reviews_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payout_methods: {
         Row: {
           account_name: string
@@ -422,6 +470,7 @@ export type Database = {
           created_at: string
           id: string
           mentor_id: string
+          private_feedback: string | null
           rating: number
           user_id: string
         }
@@ -431,6 +480,7 @@ export type Database = {
           created_at?: string
           id?: string
           mentor_id: string
+          private_feedback?: string | null
           rating: number
           user_id: string
         }
@@ -440,6 +490,7 @@ export type Database = {
           created_at?: string
           id?: string
           mentor_id?: string
+          private_feedback?: string | null
           rating?: number
           user_id?: string
         }
