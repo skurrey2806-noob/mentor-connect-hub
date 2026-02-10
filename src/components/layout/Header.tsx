@@ -24,12 +24,19 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        {/* <Link to="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-lg font-bold text-primary-foreground">M</span>
           </div>
           <span className="text-xl font-bold">MenTOR</span>
-        </Link>
+        </Link> */}
+        <Link to="/" className="flex items-center gap-2">
+  <img
+    src="/logo.png"
+    alt="Mentor Connect"
+    className="h-8 w-auto"
+  />
+</Link>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-6">

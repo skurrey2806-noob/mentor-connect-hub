@@ -418,13 +418,13 @@ export default function LandingPage() {
               <Link to="/browse">Find a Mentor</Link>
             </Button>
             <Button
-              size="lg"
-              variant="outline"
-              asChild
-              className="h-12 border-primary-foreground/30 px-8 text-base text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              <Link to="/become-mentor">Become a Mentor</Link>
-            </Button>
+                size="lg"
+                variant="outline"
+                asChild
+                className="h-12 border-primary-foreground/30 px-8 text-base text-black hover:bg-primary-foreground/10"
+              >
+                <Link to="/become-mentor">Become a Mentor</Link>
+              </Button>
           </div>
         </div>
       </section>

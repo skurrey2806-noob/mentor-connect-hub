@@ -51,15 +51,28 @@ function DashboardSidebar() {
   const location = useLocation();
   
   return (
-    <Sidebar className="border-r bg-background">
+    // <Sidebar className="border-r bg-background">
+    //   <div className="p-4">
+    //     <Link to="/" className="flex items-center gap-2">
+    //       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+    //         <span className="text-lg font-bold text-primary-foreground">M</span>
+    //       </div>
+    //       <span className="text-xl font-bold">Mentor</span>
+    //     </Link>
+    //   </div>
+
+        <Sidebar className="border-r bg-background">
       <div className="p-4">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-lg font-bold text-primary-foreground">M</span>
-          </div>
-          <span className="text-xl font-bold">MentorHub</span>
-        </Link>
+<Link to="/" className="flex items-center gap-2">
+  <img
+    src="/logo.png"
+    alt="Mentor Connect"
+    className="h-8 w-auto"
+  />
+</Link>
       </div>
+
+    
       
       <SidebarContent className="p-2">
         <SidebarGroup>

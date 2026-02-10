@@ -16,21 +16,27 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* Rose/Pink primary - #F43F5E */
-    --primary: 347 77% 50%;
-    --primary-foreground: 0 0% 100%;
+/* Primary Rose (balanced, calm but visible) */
+--primary: 347 72% 52%;        /* ~ #F0546F */
+--primary-foreground: 0 0% 100%;
 
-    /* Soft pink secondary */
-    --secondary: 350 100% 97%;
-    --secondary-foreground: 347 77% 50%;
+/* Hover / Focus (stronger for clarity) */
+--primary-hover: 347 77% 48%;  /* close to #F43F5E */
 
-    /* Muted backgrounds */
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+/* Active / Pressed */
+--primary-active: 347 80% 44%;
 
-    /* Light pink accent */
-    --accent: 350 100% 95%;
-    --accent-foreground: 347 77% 40%;
+/* Soft pink secondary */
+--secondary: 350 100% 96%;
+--secondary-foreground: 347 72% 45%;
+
+/* Muted backgrounds */
+--muted: 240 5% 96%;
+--muted-foreground: 240 4% 46%;
+
+/* Light pink accent */
+--accent: 350 100% 94%;
+--accent-foreground: 347 72% 42%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
