@@ -25,6 +25,7 @@ import DashboardServices from "./pages/dashboard/DashboardServices";
 import DashboardCalendar from "./pages/dashboard/DashboardCalendar";
 import DashboardPayouts from "./pages/dashboard/DashboardPayouts";
 import DashboardWallet from "./pages/dashboard/DashboardWallet";
+import DashboardProfileEdit from "./pages/dashboard/DashboardProfileEdit";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="calendar" element={<DashboardCalendar />} />
               <Route path="payouts" element={<DashboardPayouts />} />
               <Route path="wallet" element={<DashboardWallet />} />
+              <Route path="profile/edit" element={<DashboardProfileEdit />} />
             </Route>
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

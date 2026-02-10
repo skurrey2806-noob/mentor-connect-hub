@@ -182,6 +182,7 @@ export type Database = {
           field_of_study: string | null
           id: string
           institution: string
+          location: string | null
           mentor_id: string
           start_year: number | null
         }
@@ -192,6 +193,7 @@ export type Database = {
           field_of_study?: string | null
           id?: string
           institution: string
+          location?: string | null
           mentor_id: string
           start_year?: number | null
         }
@@ -202,6 +204,7 @@ export type Database = {
           field_of_study?: string | null
           id?: string
           institution?: string
+          location?: string | null
           mentor_id?: string
           start_year?: number | null
         }
@@ -220,9 +223,11 @@ export type Database = {
           company: string
           created_at: string
           description: string | null
+          employment_type: string | null
           end_date: string | null
           id: string
           is_current: boolean | null
+          location: string | null
           mentor_id: string
           role: string
           start_date: string
@@ -231,9 +236,11 @@ export type Database = {
           company: string
           created_at?: string
           description?: string | null
+          employment_type?: string | null
           end_date?: string | null
           id?: string
           is_current?: boolean | null
+          location?: string | null
           mentor_id: string
           role: string
           start_date: string
@@ -242,9 +249,11 @@ export type Database = {
           company?: string
           created_at?: string
           description?: string | null
+          employment_type?: string | null
           end_date?: string | null
           id?: string
           is_current?: boolean | null
+          location?: string | null
           mentor_id?: string
           role?: string
           start_date?: string
