@@ -194,7 +194,7 @@ export function MentorFeedbackDialog({
             className="w-full rounded-full"
             size="lg"
           >
-            {isSubmitting ? 'Submitting...' : `Submit & Release ₹${sessionPrice} Payment`}
+            {isSubmitting ? 'Submitting...' : `Submit`}
           </Button>
         </div>
       </DialogContent>

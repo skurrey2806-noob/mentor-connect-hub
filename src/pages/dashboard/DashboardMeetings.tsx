@@ -307,7 +307,7 @@ export default function DashboardMeetings() {
                           onClick={() => setFeedbackBooking(booking)}
                         >
                           <AlertCircle className="mr-2 h-4 w-4" />
-                          Submit Review to Release Payment
+                          Submit Review
                         </Button>
                       </div>
                     )}
