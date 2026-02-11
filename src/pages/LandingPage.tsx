@@ -22,6 +22,7 @@ import {
   TrendingUp,
   Lightbulb,
   ArrowRight,
+  Sparkles,
 } from 'lucide-react';
 
 // Mock featured mentors (will be replaced with real data)
@@ -176,9 +177,9 @@ const faqs = [
       'Yes! If you have industry experience and want to help others grow, you can apply to become a mentor. Click on "Become a Mentor" to start your application.',
   },
   {
-    question: 'What if I\'m not satisfied with a session?',
+    question: "What if I'm not satisfied with a session?",
     answer:
-      'We have a satisfaction guarantee. If you\'re not happy with your session, you can request a review and we\'ll work to make it right, including potential refunds.',
+      "We have a satisfaction guarantee. If you're not happy with your session, you can request a review and we'll work to make it right, including potential refunds.",
   },
 ];
 
@@ -187,27 +188,44 @@ export default function LandingPage() {
     <PublicLayout>
       {/* Hero Section */}
       <section className="relative overflow-hidden gradient-hero">
-        <div className="container py-20 md:py-32">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-[hsl(350_100%_90%/0.4)] blur-[100px]" />
+        <div className="pointer-events-none absolute top-20 -right-40 h-[400px] w-[400px] rounded-full bg-[hsl(280_80%_90%/0.35)] blur-[100px]" />
+        <div className="pointer-events-none absolute -bottom-20 left-1/3 h-[300px] w-[300px] rounded-full bg-[hsl(170_70%_90%/0.3)] blur-[80px]" />
+
+        <div className="container relative py-24 md:py-40">
           <div className="mx-auto max-w-3xl text-center">
-            <Badge className="mb-6" variant="secondary">
+            <Badge className="mb-8 border-0 bg-background/80 px-4 py-1.5 text-sm font-medium shadow-soft backdrop-blur-sm" variant="secondary">
+              <Sparkles className="mr-1.5 h-3.5 w-3.5 text-primary" />
               🚀 Trusted by 10,000+ professionals
             </Badge>
-            <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-6xl lg:text-7xl">
               Connect 1-1 With{' '}
-              <span className="text-primary">Industry Mentors</span>
+              <span className="bg-gradient-to-r from-primary via-mentor-pink to-mentor-purple bg-clip-text text-transparent">
+                Industry Mentors
+              </span>
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
               Get personalized guidance from experienced professionals. Accelerate
               your career with mentorship from those who've been there.
             </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" asChild className="h-12 px-8 text-base">
+            <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Button
+                size="lg"
+                asChild
+                className="h-13 gradient-hero-cta rounded-full border-0 px-8 text-base font-semibold shadow-glow transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_6px_hsl(var(--mentor-rose)/0.3)]"
+              >
                 <Link to="/browse">
                   Book a 1-on-1 Call
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base">
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="h-13 rounded-full border-2 border-border/60 bg-background/60 px-8 text-base font-medium backdrop-blur-sm transition-all duration-300 hover:border-primary/40 hover:bg-accent/50"
+              >
                 <Link to="/become-mentor">Become a Mentor</Link>
               </Button>
             </div>
@@ -216,47 +234,60 @@ export default function LandingPage() {
       </section>
 
       {/* Featured Mentors */}
-      <section className="container py-20">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold">Featured Mentors</h2>
-          <p className="mt-3 text-muted-foreground">
+      <section className="container py-24">
+        <div className="mb-14 text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+            Top Mentors
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Featured Mentors</h2>
+          <p className="mx-auto mt-4 max-w-md text-muted-foreground">
             Learn from the best in the industry
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {featuredMentors.map((mentor) => (
-            <Card key={mentor.id} className="group overflow-hidden transition-all hover:shadow-card">
-              <CardContent className="p-5">
+            <Card
+              key={mentor.id}
+              className="group relative overflow-hidden border border-border/50 bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+            >
+              <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center">
-                  <Avatar className="h-20 w-20 ring-4 ring-secondary">
-                    <AvatarImage src={mentor.avatar} alt={mentor.name} />
-                    <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                      {mentor.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">
+                  <div className="relative">
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary/20 via-mentor-pink/20 to-mentor-purple/20 opacity-0 blur transition-opacity duration-300 group-hover:opacity-100" />
+                    <Avatar className="relative h-20 w-20 ring-4 ring-secondary">
+                      <AvatarImage src={mentor.avatar} alt={mentor.name} />
+                      <AvatarFallback className="gradient-hero-cta text-primary-foreground text-xl font-bold">
+                        {mentor.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <h3 className="mt-5 font-semibold transition-colors group-hover:text-primary">
                     {mentor.name}
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     {mentor.role}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground/70">
                     at {mentor.company}
                   </p>
                   <div className="mt-3 flex items-center gap-1">
                     <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                     <span className="text-sm font-medium">{mentor.rating}</span>
                   </div>
-                  <div className="mt-3 flex flex-wrap justify-center gap-1">
+                  <div className="mt-3 flex flex-wrap justify-center gap-1.5">
                     {mentor.skills.map((skill) => (
-                      <Badge key={skill} variant="secondary" className="text-xs">
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="rounded-full px-3 text-xs font-normal"
+                      >
                         {skill}
                       </Badge>
                     ))}
                   </div>
-                  <div className="mt-4">
-                    <span className="text-lg font-bold text-primary">
+                  <div className="mt-5 flex items-baseline gap-0.5">
+                    <span className="text-xl font-bold text-primary">
                       ₹{mentor.hourlyRate}
                     </span>
                     <span className="text-xs text-muted-foreground">/session</span>
@@ -267,19 +298,29 @@ export default function LandingPage() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <Button variant="outline" asChild>
-            <Link to="/browse">View All Mentors</Link>
+        <div className="mt-12 text-center">
+          <Button
+            variant="outline"
+            asChild
+            className="rounded-full border-2 px-6 transition-all duration-300 hover:border-primary/40 hover:bg-accent/50"
+          >
+            <Link to="/browse">
+              View All Mentors
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </section>
 
       {/* Mentoring Areas */}
-      <section className="bg-muted/30 py-20">
+      <section className="gradient-section-alt py-24">
         <div className="container">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">Our Mentoring Areas</h2>
-            <p className="mt-3 text-muted-foreground">
+          <div className="mb-14 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+              Explore
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Our Mentoring Areas</h2>
+            <p className="mx-auto mt-4 max-w-md text-muted-foreground">
               Find mentors across diverse fields and industries
             </p>
           </div>
@@ -293,10 +334,10 @@ export default function LandingPage() {
               >
                 <Badge
                   variant="outline"
-                  className="h-10 cursor-pointer border-2 px-4 text-sm transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                  className="h-11 cursor-pointer rounded-full border-2 border-border/60 bg-background/80 px-5 text-sm font-medium backdrop-blur-sm transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-soft"
                 >
                   {category.name}
-                  <span className="ml-2 text-xs opacity-60">({category.count})</span>
+                  <span className="ml-2 text-xs opacity-50">({category.count})</span>
                 </Badge>
               </Link>
             ))}
@@ -305,23 +346,29 @@ export default function LandingPage() {
       </section>
 
       {/* Benefits Grid */}
-      <section className="container py-20">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold">Why Choose MenTOR?</h2>
-          <p className="mt-3 text-muted-foreground">
+      <section className="container py-24">
+        <div className="mb-14 text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+            Benefits
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Why Choose MenTOR?</h2>
+          <p className="mx-auto mt-4 max-w-md text-muted-foreground">
             Everything you need to accelerate your growth
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {benefits.map((benefit) => (
-            <Card key={benefit.title} className="border-none shadow-none bg-muted/30">
-              <CardContent className="p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+            <Card
+              key={benefit.title}
+              className="group border border-border/40 bg-card/50 transition-all duration-300 hover:-translate-y-0.5 hover:border-border hover:shadow-card"
+            >
+              <CardContent className="p-7">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-mentor-pink/10 transition-all duration-300 group-hover:from-primary/20 group-hover:to-mentor-pink/20">
                   <benefit.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="mt-4 font-semibold">{benefit.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <h3 className="mt-5 font-semibold">{benefit.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   {benefit.description}
                 </p>
               </CardContent>
@@ -331,19 +378,25 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-muted/30 py-20">
+      <section className="gradient-section-alt py-24">
         <div className="container">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">What Our Users Say</h2>
-            <p className="mt-3 text-muted-foreground">
+          <div className="mb-14 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+              Testimonials
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">What Our Users Say</h2>
+            <p className="mx-auto mt-4 max-w-md text-muted-foreground">
               Real stories from real professionals
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((testimonial) => (
-              <Card key={testimonial.name} className="bg-background">
-                <CardContent className="p-6">
+              <Card
+                key={testimonial.name}
+                className="border border-border/40 bg-background transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card"
+              >
+                <CardContent className="p-7">
                   <div className="flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star
@@ -352,18 +405,18 @@ export default function LandingPage() {
                       />
                     ))}
                   </div>
-                  <p className="mt-4 text-sm text-muted-foreground">
+                  <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
                     "{testimonial.content}"
                   </p>
-                  <div className="mt-6 flex items-center gap-3">
+                  <div className="mt-6 flex items-center gap-3 border-t border-border/40 pt-5">
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
+                      <AvatarFallback className="gradient-hero-cta text-primary-foreground text-sm font-semibold">
                         {testimonial.name.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <p className="text-sm font-semibold">{testimonial.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {testimonial.role}
                       </p>
@@ -377,22 +430,29 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="container py-20">
+      <section className="container py-24">
         <div className="mx-auto max-w-3xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">Frequently Asked Questions</h2>
-            <p className="mt-3 text-muted-foreground">
+          <div className="mb-14 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+              FAQ
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Frequently Asked Questions</h2>
+            <p className="mx-auto mt-4 max-w-md text-muted-foreground">
               Everything you need to know about MenTOR
             </p>
           </div>
 
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-3">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="rounded-xl border border-border/50 bg-card/50 px-6 transition-colors data-[state=open]:bg-card data-[state=open]:shadow-card"
+              >
+                <AccordionTrigger className="py-5 text-left font-medium hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
+                <AccordionContent className="pb-5 leading-relaxed text-muted-foreground">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -402,29 +462,32 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary py-20 text-primary-foreground">
-        <div className="container text-center">
-          <h2 className="text-3xl font-bold">Ready to Accelerate Your Growth?</h2>
-          <p className="mt-4 text-lg opacity-90">
+      <section className="relative overflow-hidden gradient-cta-section py-24 text-primary-foreground">
+        <div className="pointer-events-none absolute -top-40 -right-40 h-[400px] w-[400px] rounded-full bg-[hsl(0_0%_100%/0.08)] blur-[80px]" />
+        <div className="pointer-events-none absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-[hsl(0_0%_100%/0.06)] blur-[80px]" />
+
+        <div className="container relative text-center">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Ready to Accelerate Your Growth?</h2>
+          <p className="mx-auto mt-5 max-w-lg text-lg opacity-90">
             Join thousands of professionals who've transformed their careers
           </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button
               size="lg"
               variant="secondary"
               asChild
-              className="h-12 px-8 text-base"
+              className="h-13 rounded-full px-8 text-base font-semibold shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-xl"
             >
               <Link to="/browse">Find a Mentor</Link>
             </Button>
             <Button
-                size="lg"
-                variant="outline"
-                asChild
-                className="h-12 border-primary-foreground/30 px-8 text-base text-black hover:bg-primary-foreground/10"
-              >
-                <Link to="/become-mentor">Become a Mentor</Link>
-              </Button>
+              size="lg"
+              variant="outline"
+              asChild
+              className="h-13 rounded-full border-2 border-primary-foreground/30 px-8 text-base font-medium text-primary-foreground transition-all duration-300 hover:border-primary-foreground/60 hover:bg-primary-foreground/10"
+            >
+              <Link to="/become-mentor">Become a Mentor</Link>
+            </Button>
           </div>
         </div>
       </section>
