@@ -152,24 +152,7 @@
   }
 
   .gradient-hero {
-    background: linear-gradient(160deg, 
-      hsl(350 100% 96%) 0%, 
-      hsl(280 80% 96%) 40%, 
-      hsl(170 60% 96%) 70%,
-      hsl(var(--background)) 100%
-    );
-  }
-
-  .gradient-hero-cta {
-    background: linear-gradient(135deg, hsl(var(--mentor-rose)) 0%, hsl(var(--mentor-pink)) 50%, hsl(var(--mentor-purple)) 100%);
-  }
-
-  .gradient-section-alt {
-    background: linear-gradient(180deg, hsl(280 80% 97%) 0%, hsl(350 100% 97%) 100%);
-  }
-
-  .gradient-cta-section {
-    background: linear-gradient(135deg, hsl(347 77% 50%) 0%, hsl(280 75% 55%) 50%, hsl(330 81% 55%) 100%);
+    background: linear-gradient(180deg, hsl(var(--mentor-rose-light)) 0%, hsl(var(--background)) 100%);
   }
 
   .shadow-soft {
@@ -178,17 +161,5 @@
 
   .shadow-card {
     box-shadow: 0 2px 8px -2px hsl(240 10% 3.9% / 0.08), 0 4px 12px -4px hsl(240 10% 3.9% / 0.05);
-  }
-
-  .shadow-card-hover {
-    box-shadow: 0 8px 30px -4px hsl(var(--mentor-rose) / 0.15), 0 4px 16px -6px hsl(240 10% 3.9% / 0.1);
-  }
-
-  .shadow-glow {
-    box-shadow: 0 0 20px 4px hsl(var(--mentor-rose) / 0.25), 0 4px 16px -4px hsl(var(--mentor-rose) / 0.2);
-  }
-
-  .blob {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
   }
 }
