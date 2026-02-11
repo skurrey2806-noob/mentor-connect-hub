@@ -15,6 +15,7 @@ import BookingPage from "./pages/BookingPage";
 import WalletPage from "./pages/WalletPage";
 import UserBookingsPage from "./pages/UserBookingsPage";
 import BecomeMentorPage from "./pages/BecomeMentorPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import NotFound from "./pages/NotFound";
 
 // Dashboard Pages
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bookings" element={<UserBookingsPage />} />
+            <Route path="/profile" element={<UserProfilePage />} />
             <Route path="/become-mentor" element={<BecomeMentorPage />} />
             
             {/* Mentor Dashboard Routes */}
