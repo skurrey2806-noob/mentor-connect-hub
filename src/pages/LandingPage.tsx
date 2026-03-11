@@ -54,7 +54,7 @@ const categories = [
 
 const benefits = [
   { icon: Users, title: 'Personalized Guidance', description: 'Tailored advice for your unique career path.' },
-  { icon: Shield, title: 'Real Industry Advice', description: 'Learn from people who've been there.' },
+  { icon: Shield, title: 'Real Industry Advice', description: 'Learn from people who\'ve been there.' },
   { icon: Clock, title: 'Flexible Scheduling', description: 'Book sessions on your own time.' },
   { icon: Target, title: 'Clear Pricing', description: 'No hidden fees. Pay per session.' },
   { icon: Sparkles, title: 'No Long-Term Commitment', description: 'Book one call or many — your choice.' },
