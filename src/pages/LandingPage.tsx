@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Accordion,
   AccordionContent,
@@ -11,174 +10,77 @@ import {
 } from '@/components/ui/accordion';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 import {
-  Star,
+  Search,
+  CalendarCheck,
+  MessageCircle,
+  Rocket,
   Users,
   Clock,
   Shield,
-  Award,
-  MessageCircle,
   Target,
-  Zap,
   TrendingUp,
-  Lightbulb,
+  Sparkles,
   ArrowRight,
 } from 'lucide-react';
 
-// Mock featured mentors (will be replaced with real data)
-const featuredMentors = [
+const steps = [
   {
-    id: '1',
-    name: 'Priya Sharma',
-    role: 'Senior Product Manager',
-    company: 'Google',
-    avatar: '',
-    rating: 4.9,
-    hourlyRate: 2500,
-    skills: ['Product Strategy', 'Roadmapping'],
+    icon: Search,
+    title: 'Find the right mentor',
+    description: 'Browse experts across industries and pick someone who fits your goals.',
   },
   {
-    id: '2',
-    name: 'Rahul Mehta',
-    role: 'Staff Software Engineer',
-    company: 'Microsoft',
-    avatar: '',
-    rating: 4.8,
-    hourlyRate: 3000,
-    skills: ['System Design', 'DSA'],
+    icon: CalendarCheck,
+    title: 'Book a call',
+    description: 'Choose a time that works and book a 1-on-1 video session instantly.',
   },
   {
-    id: '3',
-    name: 'Ananya Desai',
-    role: 'Design Director',
-    company: 'Flipkart',
-    avatar: '',
-    rating: 5.0,
-    hourlyRate: 2000,
-    skills: ['UI/UX', 'Design Systems'],
+    icon: MessageCircle,
+    title: 'Get real advice',
+    description: 'Have an honest conversation. Ask questions. Get clarity on your next move.',
   },
   {
-    id: '4',
-    name: 'Vikram Singh',
-    role: 'Engineering Manager',
-    company: 'Amazon',
-    avatar: '',
-    rating: 4.7,
-    hourlyRate: 3500,
-    skills: ['Leadership', 'Career Growth'],
+    icon: Rocket,
+    title: 'Move forward faster',
+    description: 'Apply what you learn and accelerate your career with expert shortcuts.',
   },
 ];
 
 const categories = [
-  { name: 'Design', slug: 'design', count: 45 },
-  { name: 'Software Development', slug: 'sde', count: 120 },
-  { name: 'Product Management', slug: 'product', count: 78 },
-  { name: 'Data Science', slug: 'data-science', count: 56 },
-  { name: 'Marketing', slug: 'marketing', count: 34 },
-  { name: 'JEE Preparation', slug: 'jee', count: 89 },
-  { name: 'Career Guidance', slug: 'career', count: 67 },
-  { name: 'Entrepreneurship', slug: 'entrepreneurship', count: 42 },
+  'Design', 'Software Development', 'Product Management', 'Data Science',
+  'Marketing', 'JEE Preparation', 'Career Guidance', 'Entrepreneurship',
+  'AI & Machine Learning', 'Finance', 'Content Writing', 'UX Research',
 ];
 
 const benefits = [
-  {
-    icon: Users,
-    title: '1-on-1 Sessions',
-    description: 'Personal attention from industry experts tailored to your goals.',
-  },
-  {
-    icon: Clock,
-    title: 'Flexible Scheduling',
-    description: 'Book sessions that fit your schedule, anytime, anywhere.',
-  },
-  {
-    icon: Shield,
-    title: 'Verified Mentors',
-    description: 'All mentors are vetted professionals with proven track records.',
-  },
-  {
-    icon: Award,
-    title: 'Expert Guidance',
-    description: 'Learn from people who have walked the path you want to take.',
-  },
-  {
-    icon: MessageCircle,
-    title: 'Actionable Feedback',
-    description: 'Get specific, actionable advice to accelerate your growth.',
-  },
-  {
-    icon: Target,
-    title: 'Goal-Oriented',
-    description: 'Work towards your specific career goals with a structured approach.',
-  },
-  {
-    icon: Zap,
-    title: 'Fast Results',
-    description: 'Skip years of trial and error with expert shortcuts.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Career Growth',
-    description: 'Advance your career with insider knowledge and networking.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Fresh Perspectives',
-    description: 'Gain new insights and ideas from diverse industry leaders.',
-  },
-];
-
-const testimonials = [
-  {
-    name: 'Arjun Kumar',
-    role: 'SDE at Razorpay',
-    avatar: '',
-    content:
-      'The mentorship I received helped me crack my dream job. My mentor guided me through system design interviews and helped me negotiate a 40% higher package.',
-    rating: 5,
-  },
-  {
-    name: 'Sneha Patel',
-    role: 'Product Designer at Swiggy',
-    avatar: '',
-    content:
-      'Having a mentor who understood the design industry in India was invaluable. She helped me build my portfolio and prepare for interviews at top companies.',
-    rating: 5,
-  },
-  {
-    name: 'Rohit Gupta',
-    role: 'Founder, TechStart',
-    avatar: '',
-    content:
-      'My mentor helped me validate my startup idea and connected me with investors. The ROI on mentorship sessions has been incredible.',
-    rating: 5,
-  },
+  { icon: Users, title: 'Personalized Guidance', description: 'Tailored advice for your unique career path.' },
+  { icon: Shield, title: 'Real Industry Advice', description: 'Learn from people who\'ve been there.' },
+  { icon: Clock, title: 'Flexible Scheduling', description: 'Book sessions on your own time.' },
+  { icon: Target, title: 'Clear Pricing', description: 'No hidden fees. Pay per session.' },
+  { icon: Sparkles, title: 'No Long-Term Commitment', description: 'Book one call or many — your choice.' },
+  { icon: TrendingUp, title: 'Career Growth', description: 'Get insider knowledge to level up faster.' },
 ];
 
 const faqs = [
   {
-    question: 'How does MenTOR work?',
-    answer:
-      'Browse our mentor directory, find a mentor whose experience matches your goals, book a session using tokens, and connect via video call. After the session, you can rate your experience and book follow-up sessions.',
+    question: 'How does SkillinUp work?',
+    answer: 'Browse our mentor directory, find someone whose experience matches your goals, book a session, and connect via video call. It\'s that simple.',
   },
   {
-    question: 'How are mentors vetted?',
-    answer:
-      'All mentors go through a verification process where we check their professional background, work experience, and credentials. We only onboard mentors with proven industry experience.',
+    question: 'How are mentors verified?',
+    answer: 'All mentors go through a verification process where we check their professional background, work experience, and credentials.',
   },
   {
-    question: 'What are tokens and how do they work?',
-    answer:
-      'Tokens are our in-platform currency. You purchase tokens which can be used to book sessions with any mentor. Each mentor sets their own token rate per session.',
+    question: 'What does a session cost?',
+    answer: 'Each mentor sets their own rate. You can see pricing upfront before booking — no surprises.',
   },
   {
     question: 'Can I become a mentor?',
-    answer:
-      'Yes! If you have industry experience and want to help others grow, you can apply to become a mentor. Click on "Become a Mentor" to start your application.',
+    answer: 'Yes! If you have industry experience and want to help others grow, click "Become a Mentor" to start your application.',
   },
   {
-    question: 'What if I\'m not satisfied with a session?',
-    answer:
-      'We have a satisfaction guarantee. If you\'re not happy with your session, you can request a review and we\'ll work to make it right, including potential refunds.',
+    question: 'What if I\'m not satisfied?',
+    answer: 'We have a satisfaction guarantee. If you\'re not happy with your session, reach out and we\'ll work to make it right.',
   },
 ];
 
@@ -186,143 +88,69 @@ export default function LandingPage() {
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden gradient-hero">
-        <div className="container py-20 md:py-32">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 gradient-hero" />
+        <div className="container relative py-28 md:py-40">
           <div className="mx-auto max-w-3xl text-center">
-            <Badge className="mb-6" variant="secondary">
-              🚀 Trusted by 10,000+ professionals
-            </Badge>
-            <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
-              Connect 1-1 With{' '}
-              <span className="text-primary">Industry Mentors</span>
+            <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-6xl lg:text-7xl leading-[1.1]">
+              Talk to Industry Experts.{' '}
+              <span className="text-primary">Get Real Career Clarity.</span>
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-              Get personalized guidance from experienced professionals. Accelerate
-              your career with mentorship from those who've been there.
+            <p className="mt-6 text-lg text-muted-foreground md:text-xl max-w-xl mx-auto">
+              Book 1-on-1 calls with verified professionals and get actionable advice — no fluff, just real guidance.
             </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" asChild className="h-12 px-8 text-base">
+            <div className="mt-10">
+              <Button size="lg" asChild className="h-13 px-10 text-base rounded-full shadow-soft">
                 <Link to="/browse">
                   Book a 1-on-1 Call
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base">
-                <Link to="/become-mentor">Become a Mentor</Link>
-              </Button>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Featured Mentors */}
-      <section className="container py-20">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold">Featured Mentors</h2>
-          <p className="mt-3 text-muted-foreground">
-            Learn from the best in the industry
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {featuredMentors.map((mentor) => (
-            <Card key={mentor.id} className="group overflow-hidden transition-all hover:shadow-card">
-              <CardContent className="p-5">
-                <div className="flex flex-col items-center text-center">
-                  <Avatar className="h-20 w-20 ring-4 ring-secondary">
-                    <AvatarImage src={mentor.avatar} alt={mentor.name} />
-                    <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                      {mentor.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <h3 className="mt-4 font-semibold group-hover:text-primary transition-colors">
-                    {mentor.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {mentor.role}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    at {mentor.company}
-                  </p>
-                  <div className="mt-3 flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-medium">{mentor.rating}</span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap justify-center gap-1">
-                    {mentor.skills.map((skill) => (
-                      <Badge key={skill} variant="secondary" className="text-xs">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="mt-4">
-                    <span className="text-lg font-bold text-primary">
-                      ₹{mentor.hourlyRate}
-                    </span>
-                    <span className="text-xs text-muted-foreground">/session</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="mt-10 text-center">
-          <Button variant="outline" asChild>
-            <Link to="/browse">View All Mentors</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Mentoring Areas */}
-      <section className="bg-muted/30 py-20">
-        <div className="container">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">Our Mentoring Areas</h2>
-            <p className="mt-3 text-muted-foreground">
-              Find mentors across diverse fields and industries
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category) => (
-              <Link
-                key={category.slug}
-                to={`/browse?category=${category.slug}`}
-                className="group"
+          {/* Floating abstract cards */}
+          <div className="mt-16 flex justify-center gap-4 md:gap-6">
+            {['Product Strategy', 'System Design', 'Career Switch'].map((label, i) => (
+              <div
+                key={label}
+                className={`rounded-2xl border bg-card/80 backdrop-blur-sm px-5 py-4 shadow-card transition-transform hover:-translate-y-1 ${
+                  i === 1 ? '-translate-y-3' : ''
+                }`}
               >
-                <Badge
-                  variant="outline"
-                  className="h-10 cursor-pointer border-2 px-4 text-sm transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  {category.name}
-                  <span className="ml-2 text-xs opacity-60">({category.count})</span>
-                </Badge>
-              </Link>
+                <div className="h-2 w-12 rounded-full bg-primary/20 mb-3" />
+                <p className="text-sm font-medium text-foreground">{label}</p>
+                <p className="text-xs text-muted-foreground mt-1">1-on-1 session</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Benefits Grid */}
-      <section className="container py-20">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold">Why Choose MenTOR?</h2>
-          <p className="mt-3 text-muted-foreground">
-            Everything you need to accelerate your growth
-          </p>
+      {/* How It Works */}
+      <section className="container py-24 md:py-32">
+        <div className="mb-16 text-center">
+          <Badge variant="secondary" className="mb-4 rounded-full px-4 py-1 text-xs font-medium">
+            How it works
+          </Badge>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+            What You Can Do Here
+          </h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((benefit) => (
-            <Card key={benefit.title} className="border-none shadow-none bg-muted/30">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+          {steps.map((step, i) => (
+            <Card key={step.title} className="border bg-card shadow-none hover:shadow-card transition-shadow group">
               <CardContent className="p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <benefit.icon className="h-6 w-6 text-primary" />
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary mb-5">
+                  <step.icon className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="mt-4 font-semibold">{benefit.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {benefit.description}
+                <span className="text-xs font-semibold text-muted-foreground">Step {i + 1}</span>
+                <h3 className="mt-1 text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                  {step.description}
                 </p>
               </CardContent>
             </Card>
@@ -330,101 +158,104 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="bg-muted/30 py-20">
+      {/* Mentoring Areas - Pill Tags */}
+      <section className="bg-muted/30 py-24 md:py-28">
         <div className="container">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">What Our Users Say</h2>
-            <p className="mt-3 text-muted-foreground">
-              Real stories from real professionals
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+              Explore Mentoring Areas
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-md mx-auto">
+              Find experts across every field — from tech to design to test prep.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <Card key={testimonial.name} className="bg-background">
-                <CardContent className="p-6">
-                  <div className="flex gap-1">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-4 w-4 fill-amber-400 text-amber-400"
-                      />
-                    ))}
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground">
-                    "{testimonial.content}"
-                  </p>
-                  <div className="mt-6 flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        {testimonial.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+            {categories.map((cat) => (
+              <Link key={cat} to={`/browse?category=${cat.toLowerCase().replace(/\s+/g, '-')}`}>
+                <span className="inline-block rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-all hover:border-primary hover:bg-secondary hover:text-primary cursor-pointer">
+                  {cat}
+                </span>
+              </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Benefits Grid */}
+      <section className="container py-24 md:py-32">
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+            Why SkillinUp?
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Everything you need to make smarter career moves.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+          {benefits.map((b) => (
+            <div key={b.title} className="flex gap-4 items-start">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary">
+                <b.icon className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-foreground">{b.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{b.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="container py-20">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">Frequently Asked Questions</h2>
-            <p className="mt-3 text-muted-foreground">
-              Everything you need to know about MenTOR
-            </p>
-          </div>
+      <section className="bg-muted/30 py-24 md:py-28">
+        <div className="container">
+          <div className="mx-auto max-w-2xl">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+                Frequently Asked Questions
+              </h2>
+            </div>
 
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+            <Accordion type="single" collapsible className="w-full space-y-3">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="border rounded-xl bg-card px-6 data-[state=open]:shadow-card transition-shadow"
+                >
+                  <AccordionTrigger className="text-left text-sm font-medium hover:no-underline py-5">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground pb-5 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary py-20 text-primary-foreground">
-        <div className="container text-center">
-          <h2 className="text-3xl font-bold">Ready to Accelerate Your Growth?</h2>
-          <p className="mt-4 text-lg opacity-90">
-            Join thousands of professionals who've transformed their careers
-          </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              asChild
-              className="h-12 px-8 text-base"
-            >
-              <Link to="/browse">Find a Mentor</Link>
-            </Button>
-            <Button
-                size="lg"
-                variant="outline"
-                asChild
-                className="h-12 border-primary-foreground/30 px-8 text-base text-black hover:bg-primary-foreground/10"
-              >
+      <section className="py-24 md:py-32">
+        <div className="container">
+          <div className="mx-auto max-w-2xl rounded-3xl bg-secondary p-12 md:p-16 text-center">
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+              Ready to get started?
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Book your first call today and take the next step in your career.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <Button size="lg" asChild className="h-12 px-8 text-base rounded-full">
+                <Link to="/browse">Find a Mentor</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base rounded-full">
                 <Link to="/become-mentor">Become a Mentor</Link>
               </Button>
+            </div>
           </div>
         </div>
       </section>
