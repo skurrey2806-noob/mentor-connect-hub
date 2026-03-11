@@ -31,12 +31,8 @@ export function Header() {
           <span className="text-xl font-bold">MenTOR</span>
         </Link> */}
         <Link to="/" className="flex items-center gap-2">
-  <img
-    src="/logo.png"
-    alt="Mentor Connect"
-    className="h-8 w-auto"
-  />
-</Link>
+          <img src="/logo.png" alt="SkillinUp" className="h-8 w-auto" />
+        </Link>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-6">
